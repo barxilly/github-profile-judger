@@ -5,9 +5,6 @@ import { Progress } from 'rsuite';
 import './App.css'
 
 let loaded = false
-let percent = 40
-let status = 'success'
-let color = '#888888'
 
 function Space(props: { num?: number }) {
   if (!props.num) return <span style={{ height: '1em' }} />
@@ -15,6 +12,50 @@ function Space(props: { num?: number }) {
 }
 
 function App() {
+  const [percent, setPercent] = useState(40)
+  const [color, setColor] = useState('#888888')
+
+  async function loadingTextsHandler(texts: string[]) {
+    while (loaded === false) {
+      for (let i = 0; i < texts.length; i++) {
+        const loading = document.getElementById('loading')!
+        loading.innerHTML = texts[i]
+        await new Promise(resolve => setTimeout(resolve, 2300))
+      }
+    }
+  }
+
+  function shuffle(array: any[]) {
+    let currentIndex = array.length, temporaryValue, randomIndex
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+    return array
+  }
+
+  function handleClick() {
+    const username = document.getElementById('username')!.value
+    const token = document.getElementById('token')!.value
+    const presend = document.getElementsByClassName('preSend')[0]
+    presend.style.display = 'none'
+    document.getElementById('loady')!.style.display = 'block'
+    const loadingTexts = [
+      "Preparing expert judgement...",
+      "Analysing your life's work...",
+      "Comparing your skills with actual experts...",
+      "Checking your profile...",
+      "Githubbin'",
+      "Taking a sandwich break...",
+      "Reading commit names...",
+      "Wondering why some pull requests are not merged...",
+    ]
+    loadingTextsHandler(shuffle(loadingTexts))
+  }
+
   return (
     <>
       <div className='App'>
@@ -31,55 +72,13 @@ function App() {
         </div>
         <div id="loady" style={{ display: 'none' }}>
           <h1 id="loading">Loading...</h1>
-          <div style={{ width: '4em', height: '4em', margin: '0 auto', paddingTop: '2em' }}>
-            <Progress.Circle percent={percent} strokeColor={color} status={status} showInfo={false} /></div>
+          <div style={{ width: '4em', height: '4em', margin: '0 auto', paddingTop: '2em', display: 'inline-block' }}>
+            <Progress.Circle percent={percent} strokeColor={color} status={percent === 100 ? 'success' : 'active'} showInfo={percent === 100} />
+          </div>
         </div>
       </div>
     </>
   )
 }
 
-async function loadingTextsHandler(texts: string[]) {
-  const appdiv = document.getElementsByClassName('App')[0]
-  while (loaded === false) {
-    for (let i = 0; i < texts.length; i++) {
-      const loading = document.getElementById('loading')!
-      loading.innerHTML = texts[i]
-      await new Promise(resolve => setTimeout(resolve, 2300))
-    }
-  }
-}
-
-function shuffle(array: any[]) {
-  let currentIndex = array.length, temporaryValue, randomIndex
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex -= 1
-    temporaryValue = array[currentIndex]
-    array[currentIndex] = array[randomIndex]
-    array[randomIndex] = temporaryValue
-  }
-  return array
-}
-
-function handleClick() {
-  const username = document.getElementById('username')!.value
-  const token = document.getElementById('token')!.value
-  const presend = document.getElementsByClassName('preSend')[0]
-  presend.style.display = 'none'
-  document.getElementById('loady')!.style.display = 'block'
-  const loadingTexts = [
-    "Preparing expert judgement...",
-    "Analysing your life's work...",
-    "Comparing your skills with actual experts...",
-    "Checking your profile...",
-    "Githubbin'",
-    "Taking a sandwich break...",
-    "Reading commit names...",
-    "Wondering why some pull requests are not merged...",
-  ]
-  loadingTextsHandler(shuffle(loadingTexts))
-}
-
-
-export default App 
+export default App
