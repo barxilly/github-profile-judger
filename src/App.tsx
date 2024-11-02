@@ -41,10 +41,7 @@ function App() {
     const usernameInput = document.getElementById('username') as HTMLInputElement;
     const tokenInput = document.getElementById('token') as HTMLInputElement;
     let username = usernameInput.value;
-    let token = tokenInput.value || atob('Z2l0aHViX3BhdF8xMUFQSTRLUFkwQUowa2FFZ2RNU0VDX3BoRFJBTnV3Rk9XcmR6WVlvVHV3OHJmRGVJV0w2THdqUnJUMzEyWEgxTUdQTE1XUkNVSWxqcVpNeDF0');
-    if (token.length < 1) {
-      token = atob('Z2l0aHViX3BhdF8xMUFQSTRLUFkwQUowa2FFZ2RNU0VDX3BoRFJBTnV3Rk9XcmR6WVlvVHV3OHJmRGVJV0w2THdqUnJUMzEyWEgxTUdQTE1XUkNVSWxqcVpNeDF0');
-    }
+    let token = tokenInput.value;
 
     if (!username || username === '' || !token || token === '') {
       if (!username || username === '') {
@@ -329,8 +326,8 @@ function App() {
           <Space num={2} />
           <input type="text" placeholder="Github Username or Profile URL" id="username" />
           <input type="text" placeholder="Github API token" id="token" />
-          <sup style={{ fontSize: "0.6rem" }}>You <i>can</i> leave this blank, but it's recommended to use a token to avoid rate limiting.</sup>
-          <sup style={{ fontSize: "0.6rem" }}>You can get a token <a href="https://github.com/settings/tokens/new?scopes=read:user&description=The%20Profile%20Judge" target='_blank'>here</a>. But you must have access to <a href="https://github.blog/news-insights/product-news/introducing-github-models/" target='_blank'>Github Models</a> to use this feature.</sup>
+          <sup style={{ fontSize: "0.6rem" }}>You can get a token <a href="https://github.com/settings/tokens/new?scopes=read:user&description=The%20Profile%20Judge" target='_blank'>here</a>. But you must have access to <a href="https://github.blog/news-insights/product-news/introducing-github-models/" target='_blank'>Github Models</a> to use this app.</sup>
+          <sup style={{ fontSize: "0.6rem" }}>This is because I am poor and AI is £££.</sup>
           <Space num={2} />
           <button onClick={handleClick}>Check</button>
         </div>
