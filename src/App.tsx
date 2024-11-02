@@ -3,7 +3,6 @@ import { Progress } from 'rsuite';
 import './App.css'
 import html2canvas from 'html2canvas';
 import axios from 'axios';
-import { set } from 'rsuite/esm/internals/utils/date';
 
 let loaded = false
 
