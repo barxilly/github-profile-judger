@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Progress } from 'rsuite';
 import './App.css'
+import html2canvas from 'html2canvas';
 import axios from 'axios';
 import { set } from 'rsuite/esm/internals/utils/date';
 
@@ -268,6 +269,55 @@ function App() {
     typeNextChar();
   }
 
+  function copyToClipboard() {
+    const result = document.getElementById('resultText') as HTMLElement;
+    navigator.clipboard.writeText(result.innerText);
+  }
+
+  function windowScreenshot() {
+    document.getElementById('result')?.classList.remove('fade-in');
+    // Ensure all fonts are loaded
+    document.fonts.ready.then(() => {
+      // Get the current window as a png
+      // Make body text black
+      document.body.style.color = 'black';
+      document.body.style.backgroundColor = 'white';
+      // Make buttons black
+      document.querySelectorAll('button').forEach((button) => {
+        button.style.display = 'none';
+      });
+      const canvas = document.createElement('canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        html2canvas(document.body, {
+          useCORS: true, // Enable cross-origin resource sharing
+          scale: window.devicePixelRatio, // Improve the quality of the screenshot
+          logging: true // Enable logging for debugging
+        }).then((canvas) => {
+          const dataURL = canvas.toDataURL('image/png');
+
+          // Create a new image element and set its src to the data URL
+          const img = new Image();
+          img.src = dataURL;
+
+          // Download the image
+          const link = document.createElement('a');
+          link.href = dataURL;
+          link.download = 'screenshot.png';
+          link.click();
+        });
+      }
+      // Remove black text and buttons
+      document.body.style.color = '';
+      document.body.style.backgroundColor = '';
+      document.querySelectorAll('button').forEach((button) => {
+        button.style.display = '';
+      });
+    });
+  }
+
   async function loadingScreen() {
     const presend = document.getElementsByClassName('preSend')[0] as HTMLElement;
     if (presend) {
@@ -340,7 +390,8 @@ function App() {
         <div id="result" style={{ display: 'none' }}>
           <h1>The Oracle Says:</h1>
           <p id="resultText" style={{ padding: '1em' }}></p>
-        </div>
+          <button onClick={copyToClipboard} style={{ marginRight: '0.5em', fontSize: '1em', padding: '0.5em 1em' }}>Copy to Clipboard</button>
+          <button onClick={windowScreenshot} style={{ marginLeft: '0.5em', fontSize: '1em', padding: '0.5em 1em', marginBottom: "1.5em" }}>Screenshot</button></div>
       </div>
     </>
   )
