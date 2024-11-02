@@ -41,9 +41,9 @@ function App() {
     const usernameInput = document.getElementById('username') as HTMLInputElement;
     const tokenInput = document.getElementById('token') as HTMLInputElement;
     let username = usernameInput.value;
-    let token = tokenInput.value || atob('Z2hwX3ZjUWJpR1BrVmxqYzl5TDU2UkRFczBjemZBNXl2QzBjdWhJVw==');
+    let token = tokenInput.value || atob('Z2l0aHViX3BhdF8xMUFQSTRLUFkwQUowa2FFZ2RNU0VDX3BoRFJBTnV3Rk9XcmR6WVlvVHV3OHJmRGVJV0w2THdqUnJUMzEyWEgxTUdQTE1XUkNVSWxqcVpNeDF0');
     if (token.length < 1) {
-      token = atob('Z2hwX3ZjUWJpR1BrVmxqYzl5TDU2UkRFczBjemZBNXl2QzBjdWhJVw==');
+      token = atob('Z2l0aHViX3BhdF8xMUFQSTRLUFkwQUowa2FFZ2RNU0VDX3BoRFJBTnV3Rk9XcmR6WVlvVHV3OHJmRGVJV0w2THdqUnJUMzEyWEgxTUdQTE1XUkNVSWxqcVpNeDF0');
     }
 
     if (!username || username === '' || !token || token === '') {
