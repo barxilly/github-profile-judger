@@ -133,3 +133,23 @@ a:hover {
 .rs-progress-circle {
   transition: all 1s ease;
 }
+
+@keyframes glint {
+  0% {
+    background-position: -200%;
+  }
+
+  100% {
+    background-position: 200%;
+  }
+}
+
+#loading {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #4a4a4a, #4a4a4a, #4a4a4a, #4a4a4a, rgba(88, 88, 88, 0.5), #4a4a4a, #4a4a4a, #4a4a4a, #4a4a4a);
+  background-size: 200%;
+  animation: glint 4s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
