@@ -11,6 +11,7 @@ function Space(props: { num?: number }) {
   return <span style={{ height: `${props.num}em` }} />
 }
 
+
 function App() {
   const [percent, setPercent] = useState(40)
   const [color, setColor] = useState('#888888')
@@ -369,7 +370,7 @@ function App() {
     <>
       <div className='App'>
         <div className='preSend'>
-          <h1>The Profile Judge</h1>
+          <h1> The Profile Judge </h1>
           <p>Give her your github profile and she will tell you if you are a good developer or not.</p>
           <sup>Made with slight love somewhat care by <a href="https://github.com/Barxilly">@barxilly</a></sup>
           <Space num={2} />
