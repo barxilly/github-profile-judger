@@ -38,11 +38,53 @@ function App() {
   }
 
   function handleClick() {
-    const username = document.getElementById('username')!.value
-    const token = document.getElementById('token')!.value
-    const presend = document.getElementsByClassName('preSend')[0]
-    presend.style.display = 'none'
-    document.getElementById('loady')!.style.display = 'block'
+    const usernameInput = document.getElementById('username') as HTMLInputElement;
+    const tokenInput = document.getElementById('token') as HTMLInputElement;
+    const username = usernameInput.value;
+    const token = tokenInput.value;
+
+    if (!username || username === '' || !token || token === '') {
+      if (!username || username === '') {
+        usernameInput.classList.add('shake');
+        usernameInput.classList.add('aftershake');
+
+        setTimeout(() => {
+          usernameInput.classList.remove('shake');
+        }, 500);
+      } else {
+        usernameInput.classList.remove('aftershake');
+      }
+
+      if (!token || token === '') {
+        tokenInput.classList.add('shake');
+        tokenInput.classList.add('aftershake');
+
+        setTimeout(() => {
+          tokenInput.classList.remove('shake');
+        }, 500);
+      } else {
+        tokenInput.classList.remove('aftershake');
+      }
+
+      return;
+    } else {
+      loadingScreen();
+    }
+  }
+
+  function loadingScreen() {
+    const presend = document.getElementsByClassName('preSend')[0] as HTMLElement;
+    if (presend) {
+      presend.classList.add('fade-out');
+      presend.addEventListener('animationend', () => {
+        presend.style.display = 'none';
+      });
+    }
+    const loady = document.getElementById('loady') as HTMLElement;
+    if (loady) {
+      loady.style.display = 'block';
+      loady.classList.add('fade-in');
+    }
     const loadingTexts = [
       "Preparing expert judgement...",
       "Analysing your life's work...",
@@ -62,7 +104,7 @@ function App() {
         <div className='preSend'>
           <h1>The Profile Judge</h1>
           <p>Give her your github profile and she will tell you if you are a good developer or not.</p>
-          <sup>Made with somewhat care by <a href="https://github.com/Barxilly">@barxilly</a></sup>
+          <sup>Made with slight love somewhat care by <a href="https://github.com/Barxilly">@barxilly</a></sup>
           <Space num={2} />
           <input type="text" placeholder="Github Username or Profile URL" id="username" />
           <input type="text" placeholder="Github API token" id="token" />
