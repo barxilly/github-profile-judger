@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { Progress } from 'rsuite';
 import './App.css'
+import { set } from 'rsuite/esm/internals/utils/date';
 
 let loaded = false
 
@@ -37,11 +36,12 @@ function App() {
     return array
   }
 
-  function handleClick() {
+  async function handleClick() {
     const usernameInput = document.getElementById('username') as HTMLInputElement;
     const tokenInput = document.getElementById('token') as HTMLInputElement;
-    const username = usernameInput.value;
+    let username = usernameInput.value;
     const token = tokenInput.value;
+
 
     if (!username || username === '' || !token || token === '') {
       if (!username || username === '') {
@@ -69,10 +69,55 @@ function App() {
       return;
     } else {
       loadingScreen();
+      await setPercent(2);
+      if (username.includes('http') || username.includes('github.com')) {
+        const url = username;
+        const regex = /\/([^\/]+)\/?$/;
+        const matches = regex.exec(url);
+        if (matches && matches.length > 1) {
+          username = matches[1];
+        }
+      }
+      const url = `https://api.github.com/users/${username}`;
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `token ${token}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      await setPercent(10);
+      if (data.message === 'Not Found') {
+        setPercent(100);
+        setColor('#ff0000');
+        const presend = document.getElementsByClassName('preSend')[0] as HTMLElement;
+        if (presend) {
+          presend.classList.add('fade-in');
+          presend.classList.remove('fade-out');
+          presend.addEventListener('animationend', () => {
+            presend.style.display = 'flex';
+          });
+        }
+        const loady = document.getElementById('loady') as HTMLElement;
+        if (loady) {
+          loady.classList.add('fade-out');
+          loady.classList.remove('fade-in');
+          loady.addEventListener('animationend', () => {
+            loady.style.display = 'none';
+          });
+        }
+        alert('Username not found!');
+        return;
+      }
+      // Get a list of all the repositories, their names, and their descriptions
+      const repores = await fetch(`https://api.github.com/users/${username}/repos`);
+      await setPercent(20);
+      const repos = await repores.json();
+      console.log(repos);
     }
   }
 
-  function loadingScreen() {
+  async function loadingScreen() {
     const presend = document.getElementsByClassName('preSend')[0] as HTMLElement;
     if (presend) {
       presend.classList.add('fade-out');
